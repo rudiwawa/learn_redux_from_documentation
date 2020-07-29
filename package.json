@@ -7,12 +7,17 @@
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.3.2",
     "@testing-library/user-event": "^7.1.2",
+    "classnames": "^2.2.6",
+    "date-fns": "^2.15.0",
+    "faker": "^4.1.0",
+    "miragejs": "^0.1.35",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-redux": "^7.2.1",
+    "react-router-dom": "^5.1.2",
     "react-scripts": "3.4.1",
-    "redux": "^4.0.5",
-    "redux-devtools": "^3.5.0"
+    "seedrandom": "^3.0.5",
+    "txtgen": "^2.2.4"
   },
   "scripts": {
     "start": "react-scripts start",
