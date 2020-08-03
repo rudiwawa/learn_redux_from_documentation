@@ -15,7 +15,8 @@ export const AddPostForm = () => {
 
     //buat fungsi aksi save
     const onSavePostClicked = () => {
-        if (title & content) {
+        if (title && content) {
+            console.log("onSavePostClicked -> content")
             dispatch(
                 postAdded({
                     id: nanoid(),
