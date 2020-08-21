@@ -1,16 +1,43 @@
 import { createSlice } from '@reduxjs/toolkit'
+import { nanoid } from '@reduxjs/toolkit';
 
 const initialState = [
     { id: '1', title: 'First Post!', content: 'Hello!' },
     { id: '2', title: 'Second Post', content: 'More text' }
 ]//state awal
+// Remember that the name of this reducer should be a good description of what's happening,
 
+//CATATAN UPDATE POST
+// The ID of the post being updated, so that we can find the right post object in the state
+// The new title and content fields that the user typed in
+
+// Redux action objects aslinya kayak gini {type: 'posts/postUpdated', payload: {id, title, content}}.
+// reducer responsible for determing how the state should actually be updated when an action is dispatched.
 const postsSlice = createSlice({
-    name:'posts',
+    name: 'posts',
     initialState,
-    reducers:{
-        postAdded(state,action){
-            state.push(action.payload)
+    reducers: {
+        postAdded: {
+            reducer(state, action) {
+                state.push(action.payload)
+            },
+            prepare(title, content) {
+                return {
+                    payload: {
+                        id: nanoid(),
+                        title,
+                        content
+                    }
+                }
+            }
+        },
+        postUpdated(state, action) {
+            const { id, title, content } = action.payload
+            const existingPost = state.find(post => post.id === id)
+            if (existingPost) {
+                existingPost.title = title
+                existingPost.content = content
+            }
         }
     }
 })
@@ -20,5 +47,5 @@ const postsSlice = createSlice({
 // because it converts those mutations into safe immutable updates internally using 
 // the Immer library, but don't try to mutate any data outside of createSlice!
 
-export const { postAdded } = postsSlice.actions
+export const { postAdded, postUpdated } = postsSlice.actions
 export default postsSlice.reducer
