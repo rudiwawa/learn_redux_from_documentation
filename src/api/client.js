@@ -5,7 +5,6 @@
 
 export async function client(endpoint, { body, ...customConfig } = {}) {
     const headers = { 'Content-Type': 'application/json' }
-  
     const config = {
       method: body ? 'POST' : 'GET',
       ...customConfig,
@@ -16,6 +15,7 @@ export async function client(endpoint, { body, ...customConfig } = {}) {
     }
   
     if (body) {
+      console.log("client -> body", body)
       config.body = JSON.stringify(body)
     }
   
@@ -31,6 +31,7 @@ export async function client(endpoint, { body, ...customConfig } = {}) {
       return Promise.reject(err.message ? err.message : data)
     }
   }
+
   
   client.get = function (endpoint, customConfig = {}) {
     return client(endpoint, { ...customConfig, method: 'GET' })

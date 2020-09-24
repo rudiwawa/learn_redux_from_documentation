@@ -1,13 +1,17 @@
 import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { postAdded } from './postsSlice';
+import { unwrapResult } from '@reduxjs/toolkit'
 
-
+import { addNewPost } from './postsSlice'
 
 export const AddPostForm = () => {
     const [title, setTitle] = useState('');
     const [content, setContent] = useState('');
     const [userId, setUserId] = useState('');
+    const [addRequestStatus, setAddRequestStatus] = useState('idle');
+
+
 
     const dispatch = useDispatch()
 
@@ -18,18 +22,29 @@ export const AddPostForm = () => {
     const onAuthorChanged = e => setUserId(e.target.value)
 
     //buat fungsi aksi save
-    const onSavePostClicked = () => {
-        if (title && content) {
-            console.log("onSavePostClicked -> content")
-            dispatch(
-                postAdded(title, content, userId)
-            )
-            setTitle('')
-            setContent('')
+    const canSave = [title, content, userId].every(Boolean) && addRequestStatus === 'idle'
+    const onSavePostClicked = async () => {
+        if (canSave) {
+            try {
+                setAddRequestStatus('pending')
+                const resultAction = await dispatch(
+                    addNewPost({
+                        title, content, user: userId
+                    })
+                )
+                unwrapResult(resultAction)
+                setTitle('')
+                setContent('')
+                setContent('')
+            } catch (error) {
+                console.log('failed to save the post', error)
+            } finally {
+                setAddRequestStatus('idle')
+            }
         }
     }
 
-    const canSave = Boolean(title) && Boolean(content) && Boolean(userId)
+
     const userOptions = users.map(user => (
         <option key={user.id} value={user.id}>
             {user.name}
