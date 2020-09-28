@@ -1,5 +1,5 @@
 import { sub } from 'date-fns'
-import { createSlice, nanoid, createAsyncThunk } from '@reduxjs/toolkit'
+import { createSlice, nanoid, createAsyncThunk, createSelector } from '@reduxjs/toolkit'
 import { client } from '../../api/client'
 
 const initialState = {
@@ -89,3 +89,13 @@ export default postsSlice.reducer
 export const selectAllPosts = state => state.posts.posts
 export const selectPostById = (state, postId) =>
     state.posts.posts.find(post => post.id === postId)
+
+    // In this case, we know that we need the array of all posts and the user ID 
+    // as the two arguments for our output selector. We can reuse our existing selectAllPosts 
+    // selector to extract the posts array. Since the user ID is the second argument 
+    // we're passing into selectPostsByUser, we can write a small selector that just returns userId.
+
+export const selectPostsByUser = createSelector(
+    [selectAllPosts, (state, userId) => userId],
+    (posts, userId) => posts.filter(post => post.user === userId)
+)
