@@ -5,13 +5,13 @@ import {selectPostById} from './postsSlice'
 export const SinglePostPage = ({ match }) => {
     const { postId } = match.params
 
-    const post = useSelector(selectPostById)
+    const post = useSelector(state => selectPostById(state, postId))
     //semacam fungsi yang meminta parameter fungsi, ANJINK INI KENAPA NJINK
-    console.log(useSelector(
-        function (state) {
-            return state.posts.find(post => post.id === postId)
-        }
-    ))
+    // console.log(useSelector(
+    //     function (state) {
+    //         return state.posts.find(post => post.id === postId)
+    //     }
+    // ))
 
     if (!post) {
         return (
