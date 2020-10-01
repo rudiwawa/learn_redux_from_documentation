@@ -10,6 +10,7 @@ export const selectUserById = (state, userId) =>
 
 export const fetchUsers = createAsyncThunk('users/fetchUsers', async () => {
     const response = await client.get('/fakeApi/users')
+    console.log("fetchUsers -> response", response)
     return response.users
 })
 
